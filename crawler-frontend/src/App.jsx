@@ -12,7 +12,7 @@ const handleCrawl = async () => {
   setProgress([]);
 
     const res = await fetch(
-    `https://web-crawl-u3jq.vercel.app/api/crawl?url=${encodeURIComponent(url)}`
+    `https://web-crawl.vercel.app/api/crawl?url=${encodeURIComponent(url)}`
   );
   const data = await res.json();
   setReport(data);
