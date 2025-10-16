@@ -99,13 +99,39 @@ const handleCrawl = async () => {
               </tr>
             </thead>
             <tbody>
-              {report.details.map((row, i) => (
-                <tr key={i}>
-                  <td>{row.url}</td>
-                  <td>{row.status}</td>
-                  <td>{row.brokenImages}</td>
-                </tr>
-              ))}
+              {report.details && Array.isArray(report.details)
+  ? report.details.map((item, idx) => (
+      <tr key={idx}>
+        <td>{item.url}</td>
+        <td>{item.status}</td>
+        <td>{item.brokenImages}</td>
+      </tr>
+    ))
+  : (
+      <>
+        {report.details?.brokenPages?.length > 0 && (
+          <>
+            <tr><th colSpan="3">Broken Pages (404)</th></tr>
+            {report.details.brokenPages.map((url, idx) => (
+              <tr key={idx}>
+                <td colSpan="3">{url}</td>
+              </tr>
+            ))}
+          </>
+        )}
+        {report.details?.brokenImages?.length > 0 && (
+          <>
+            <tr><th colSpan="3">Pages with Broken Images</th></tr>
+            {report.details.brokenImages.map((url, idx) => (
+              <tr key={idx}>
+                <td colSpan="3">{url}</td>
+              </tr>
+            ))}
+          </>
+        )}
+      </>
+    )
+}
             </tbody>
           </table>
         </div>
