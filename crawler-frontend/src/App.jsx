@@ -6,35 +6,42 @@ export default function App() {
   const [progress, setProgress] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const handleCrawl = () => {
-    setLoading(true);
-    setReport(null);
-    setProgress([]);
+const handleCrawl = async () => {
+  setLoading(true);
+  setReport(null);
+  setProgress([]);
 
-    const eventSource = new EventSource(
-      `http://localhost:5000/crawl-stream?url=${encodeURIComponent(url)}`
-    );
+    const res = await fetch(
+    `https://web-crawl-u3jq.vercel.app/api/crawl?url=${encodeURIComponent(url)}`
+  );
+  const data = await res.json();
+  setReport(data);
+  setLoading(false);
 
-    eventSource.onmessage = (event) => {
-      const data = JSON.parse(event.data);
+  //   const eventSource = new EventSource(
+  //     `http://localhost:5000/crawl-stream?url=${encodeURIComponent(url)}`
+  //   );
 
-      // Live updates
-      if (!data.done) {
-        setProgress((prev) => [...prev, data]);
-      } else {
-        // Final results
-        setReport(data);
-        setLoading(false);
-        eventSource.close();
-      }
-    };
+  //   eventSource.onmessage = (event) => {
+  //     const data = JSON.parse(event.data);
 
-    eventSource.onerror = () => {
-      setLoading(false);
-      eventSource.close();
-      alert("Crawl failed or connection lost.");
-    };
-  };
+  //     // Live updates
+  //     if (!data.done) {
+  //       setProgress((prev) => [...prev, data]);
+  //     } else {
+  //       // Final results
+  //       setReport(data);
+  //       setLoading(false);
+  //       eventSource.close();
+  //     }
+  //   };
+
+  //   eventSource.onerror = () => {
+  //     setLoading(false);
+  //     eventSource.close();
+  //     alert("Crawl failed or connection lost.");
+  //   };
+   };
 
   return (
     <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
